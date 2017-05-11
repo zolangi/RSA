@@ -1,11 +1,16 @@
 package project2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.Random;
 
 /**
  * @author Zolangi Ramirez
- *
+ * @author Phillip Gulegin
  */
 
 public class KeyGen {
@@ -23,42 +28,35 @@ public class KeyGen {
 		BigInteger d = e.modInverse(totient);			// is the inverse of e modulo totient(n)
 		
 		System.out.println("e: " + e + "\nd: " + d + "\nn: " + n);
-	}
-	
-	// public static void 
+		
+		try {
+			privateKey(d);
+			//publicKey(e,n);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	} 
 
 	// returns true if the gcd is equal to one, else returns false
 	public static boolean gcdIsOne(BigInteger e, BigInteger totient){
-		boolean isOne= false;				// boolean to check whether the gcd is one
+		boolean isOne= false;							// boolean to check whether the gcd is one
 		
-		BigInteger gcd = e.gcd(totient);  	// gcd finds the gcd(e, totient)
-		
-		System.out.println("The GCD is: " + gcd);
-		
+		BigInteger gcd = e.gcd(totient);  				// gcd finds the gcd(e, totient)
+				
 		if(gcd.compareTo(BigInteger.ONE) == 0)			// checks if gcd is equal to one
-			isOne = true;					//if gcd = 1, then set boolean to true
+			isOne = true;								//if gcd = 1, then set boolean to true
 		else
 			isOne = false;
-		
-		System.out.println("isOne: " + isOne);
-		
-		return isOne;						// return boolean value
+				
+		return isOne;									// return boolean value
 	}
 	
 	// generates e
 	public static BigInteger genE (BigInteger totient, int bitLength, Random rnd){
-		BigInteger temp = BigInteger.probablePrime(bitLength, rnd); 	// random prime for temporary use in this method
-		
-		System.out.println("The temp value of this BigInt is: " + temp);
-		System.out.println(temp.compareTo(BigInteger.ONE) == 1);
-		System.out.println(temp.compareTo(totient));
-		
-		
+		BigInteger temp = BigInteger.probablePrime(bitLength, rnd); 	// random prime for temporary use in this method		
 		BigInteger e = null;											// instantiate e
 		boolean gcd = gcdIsOne(temp, totient);
-		
-		System.out.println(gcd);
-		
+				
 		if((temp.compareTo(BigInteger.ONE) == 1) && temp.compareTo(totient) == -1 && gcd == true ){
 			e = temp;
 			return e;
@@ -67,5 +65,37 @@ public class KeyGen {
 			genE(totient, bitLength, rnd);
 		}
 		return e;
+	}
+
+/*	public static void publicKey(BigInteger e, BigInteger n) throws IOException{
+		File f = new File("pubktest.txt");
+		try {
+			writeBI(e, f);
+			
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		}
+	}
+	*/
+	public static void privateKey(BigInteger d) throws IOException{
+		File f = new File("privktest.txt");
+		try{
+			writeBI(d, f);
+		} catch(FileNotFoundException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeBI(BigInteger bi, File f) throws IOException{
+		try{
+			OutputStream file = new FileOutputStream(f);
+			file.write(bi.toByteArray());
+			file.flush();
+			file.close();
+			
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+		}
+		
 	}
 }
