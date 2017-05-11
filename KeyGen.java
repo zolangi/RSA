@@ -30,8 +30,8 @@ public class KeyGen {
 		System.out.println("e: " + e + "\nd: " + d + "\nn: " + n);
 		
 		try {
-			privateKey(d);
-			//publicKey(e,n);
+			privateKey(d,n);
+			publicKey(e,n);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -67,8 +67,12 @@ public class KeyGen {
 		return e;
 	}
 
-/*	public static void publicKey(BigInteger e, BigInteger n) throws IOException{
-		File f = new File("pubktest.txt");
+	
+	
+	// where I tried to write public key and private key to their respective file
+	
+	public static void publicKey(BigInteger e, BigInteger n) throws IOException{
+		File f = new File("pubkey.rsa");
 		try {
 			writeBI(e, f);
 			
@@ -76,9 +80,9 @@ public class KeyGen {
 			ex.printStackTrace();
 		}
 	}
-	*/
-	public static void privateKey(BigInteger d) throws IOException{
-		File f = new File("privktest.txt");
+	
+	public static void privateKey(BigInteger d, BigInteger n) throws IOException{
+		File f = new File("privkey.rsa");
 		try{
 			writeBI(d, f);
 		} catch(FileNotFoundException e){
