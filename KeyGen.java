@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.Random;
@@ -72,22 +73,31 @@ public class KeyGen {
 	// where I tried to write public key and private key to their respective file
 	
 	public static void publicKey(BigInteger e, BigInteger n) throws IOException{
-		File f = new File("pubkey.rsa");
-		try {
-			writeBI(e, f);
-			
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		}
+
+		// Create file and object streams
+		FileOutputStream fileOutStream = new FileOutputStream("pubkey.rsa");
+        ObjectOutputStream objectOutStream = new ObjectOutputStream(fileOutStream);
+        
+        // Write BigInts to file
+        objectOutStream.writeObject(e.toByteArray());
+        objectOutStream.writeObject(n.toByteArray());
+        
+        // Close the stream
+        objectOutStream.close();
 	}
 	
 	public static void privateKey(BigInteger d, BigInteger n) throws IOException{
-		File f = new File("privkey.rsa");
-		try{
-			writeBI(d, f);
-		} catch(FileNotFoundException e){
-			e.printStackTrace();
-		}
+
+		// Create file and object streams
+		FileOutputStream fileOutStream = new FileOutputStream("privkey.rsa");
+		ObjectOutputStream objectOutStream = new ObjectOutputStream(fileOutStream);
+		
+		// Write BigInts to file
+        objectOutStream.writeObject(d.toByteArray());
+        objectOutStream.writeObject(n.toByteArray());
+
+        // Close the stream
+        objectOutStream.close();
 	}
 	
 	public static void writeBI(BigInteger bi, File f) throws IOException{
