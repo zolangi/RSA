@@ -67,10 +67,6 @@ public class KeyGen {
 		}
 		return e;
 	}
-
-	
-	
-	// where I tried to write public key and private key to their respective file
 	
 	public static void publicKey(BigInteger e, BigInteger n) throws IOException{
 
